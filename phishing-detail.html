@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ფიშინგი</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Source Sans 3',sans-serif; color:#fff; background:#0a1628; overflow-x:hidden; }
+
+    /* ფონის ანიმაცია */
+    .bg-canvas { position:fixed; top:0; left:0; right:0; bottom:0; z-index:0; pointer-events:none; overflow:hidden; }
+    .float-item { position:absolute; animation:floatUp linear infinite; user-select:none; pointer-events:none; font-family:monospace; }
+    @keyframes floatUp { 0%{transform:translateY(110vh);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateY(-20vh);opacity:0} }
+
+    header { position:relative; z-index:2; background:#C41E23; color:#fff; padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:64px; border-bottom:4px solid #8B0000; position:sticky; top:0; }
+    .logo { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; }
+    .logo span { font-weight:400; opacity:0.85; font-size:15px; margin-left:8px; }
+    .back-btn { color:rgba(255,255,255,0.85); text-decoration:none; font-size:14px; font-weight:500; }
+    .back-btn:hover { color:#fff; }
+
+    /* პირველი ფოტო */
+    .hero-photo { position:relative; z-index:1; background:#0a1628; padding:2rem 3rem 0; display:flex; justify-content:center; }
+    .hero-photo-wrap { position:relative; max-width:480px; width:100%; border-radius:16px; overflow:hidden; }
+    .hero-photo-wrap img { width:100%; display:block; border-radius:16px; }
+    .hero-fade { position:absolute; bottom:0; left:0; right:0; height:100px; background:linear-gradient(to bottom,transparent,#0a1628); }
+
+    /* ქვედა სექცია */
+    .bottom-section { position:relative; z-index:1; padding:2rem 3rem; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; max-width:1100px; margin:0 auto; }
+    .topic-label { font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:#e74c3c; margin-bottom:0.75rem; }
+    .content-title { font-family:'Playfair Display',serif; font-size:30px; font-weight:700; color:#fff; margin-bottom:0.5rem; line-height:1.25; }
+    .title-line { width:44px; height:3px; background:#e74c3c; margin-bottom:1.75rem; border-radius:2px; }
+    .content-text { font-size:15px; line-height:1.85; color:rgba(255,255,255,0.75); margin-bottom:1.25rem; }
+
+    /* ინფოგრაფიკა */
+    .infographic { border-radius:16px; overflow:hidden; background:#0f1e35; padding:1.5rem; }
+    .header-badge { display:inline-block; background:rgba(231,76,60,0.15); border:1px solid rgba(231,76,60,0.4); color:#e74c3c; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:4px 12px; border-radius:20px; margin-bottom:1rem; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+    .infographic h2 { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; margin-bottom:1.25rem; }
+
+    /* ნიშნები */
+    .signs-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:1.25rem; }
+    .sign-card { background:#152438; border:0.5px solid rgba(255,255,255,0.08); border-radius:10px; padding:1rem; transition:transform 0.2s,border-color 0.2s; }
+    .sign-card:hover { transform:translateY(-2px); border-color:rgba(231,76,60,0.4); }
+    .sign-icon { font-size:20px; margin-bottom:8px; display:block; }
+    .sign-card h4 { font-size:13px; font-weight:700; color:#fff; margin-bottom:4px; }
+    .sign-card p { font-size:11px; color:rgba(255,255,255,0.5); line-height:1.5; }
+
+    /* Do/Don't */
+    .actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:1.25rem; }
+    .action-box { border-radius:10px; padding:1rem; }
+    .action-box.dont { background:rgba(231,76,60,0.08); border:0.5px solid rgba(231,76,60,0.25); }
+    .action-box.do { background:rgba(46,204,113,0.08); border:0.5px solid rgba(46,204,113,0.25); }
+    .action-box h4 { font-size:13px; font-weight:700; margin-bottom:8px; }
+    .action-box.dont h4 { color:#e74c3c; }
+    .action-box.do h4 { color:#2ecc71; }
+    .action-item { display:flex; align-items:flex-start; gap:8px; margin-bottom:6px; font-size:12px; color:rgba(255,255,255,0.65); line-height:1.4; }
+    .dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+    .dont .dot { background:#e74c3c; }
+    .do .dot { background:#2ecc71; }
+
+    /* გაფრთხილება */
+    .alert { background:rgba(231,76,60,0.1); border:1px solid rgba(231,76,60,0.3); border-radius:10px; padding:1rem; display:flex; gap:10px; align-items:flex-start; }
+    .alert-icon { font-size:20px; flex-shrink:0; animation:pulse 2s infinite; }
+    .alert p { font-size:12px; color:rgba(255,255,255,0.65); line-height:1.5; }
+
+    .nav-bottom { position:relative; z-index:1; background:#091422; border-top:0.5px solid rgba(255,255,255,0.08); padding:1.5rem 2rem; display:flex; justify-content:space-between; align-items:center; }
+    .nav-btn { color:rgba(255,255,255,0.6); text-decoration:none; font-size:14px; font-weight:500; }
+    .nav-btn:hover { color:#fff; }
+    .nav-btn.next { color:#e74c3c; }
+
+    @media(max-width:700px) { .hero-photo{padding:1.5rem 1rem 0} .bottom-section{grid-template-columns:1fr;gap:2rem;padding:2rem 1rem 3rem} .content-title{font-size:24px} .signs-grid,.actions{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+
+  <div class="bg-canvas" id="bg-canvas"></div>
+
+  <header>
+    <a href="index.html" style="text-decoration:none; color:#fff;">
+      <div class="logo">Retail Pro <span>| სასწავლო პლატფორმა</span></div>
+    </a>
+    <a href="tema3.html" class="back-btn">← უკან</a>
+  </header>
+
+  <div class="hero-photo">
+    <div class="hero-photo-wrap">
+      <img src="phishing-hero.png" alt="ფიშინგი"/>
+      <div class="hero-fade"></div>
+    </div>
+  </div>
+
+  <div class="bottom-section">
+    <div>
+      <div class="topic-label">თემა 03 · ქსელის უსაფრთხოება</div>
+      <div class="content-title">ფიშინგი (Phishing)</div>
+      <div class="title-line"></div>
+      <p class="content-text">ფიშინგი არის კიბერთაღლითობის ერთ-ერთი ყველაზე გავრცელებული ფორმა. თავდამსხმელები გზავნიან ყალბ ელ-ფოსტებს, რომლებიც ლეგიტიმური კომპანიებიდან ან IT სამსახურიდან მომდინარეობს სახეს ატარებს, თუმცა სინამდვილეში თქვენი პაროლის ან პირადი ინფორმაციის მოპარვას ცდილობს.</p>
+      <p class="content-text">ფილიალის მენეჯერი განსაკუთრებული სიფრთხილით უნდა მოეკიდოს ნებისმიერ შეტყობინებას, რომელიც სასწრაფო მოქმედებას ან პირადი ინფორმაციის გამჟღავნებას ითხოვს. ეჭვის შემთხვევაში — ჯობია ზარი, ვიდრე დაწკაპუნება.</p>
+      <p class="content-text">თუ შეცდომით გახსენით საეჭვო ლინკი ან ჩაწერეთ პაროლი — დაუყოვნებლივ შეცვალეთ პაროლი და აცნობეთ IT სამსახურს.</p>
+    </div>
+
+    <div class="infographic">
+      <div class="header-badge">⚠ საფრთხე</div>
+      <h2>როგორ ამოვიცნოთ?</h2>
+
+      <div class="signs-grid">
+        <div class="sign-card">
+          <span class="sign-icon">👤</span>
+          <h4>უცნობი გამგზავნი</h4>
+          <p>მისამართი არ ემთხვევა ოფიციალურ დომეინს.</p>
+        </div>
+        <div class="sign-card">
+          <span class="sign-icon">🔗</span>
+          <h4>საეჭვო ლინკი</h4>
+          <p>შეიცავს უცნაურ სიტყვებს ან სიმბოლოებს.</p>
+        </div>
+        <div class="sign-card">
+          <span class="sign-icon">⚡</span>
+          <h4>სასწრაფო მოთხოვნა</h4>
+          <p>"დაუყოვნებლივ" — ზეწოლა სწრაფ მოქმედებაზე.</p>
+        </div>
+        <div class="sign-card">
+          <span class="sign-icon">🔑</span>
+          <h4>პაროლის მოთხოვნა</h4>
+          <p>IT სამსახური არასოდეს ითხოვს პაროლს ელ-ფოსტით.</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <div class="action-box dont">
+          <h4>❌ არ გააკეთო</h4>
+          <div class="action-item"><div class="dot"></div>არ დააჭირო საეჭვო ლინკს</div>
+          <div class="action-item"><div class="dot"></div>არ ჩაწერო პაროლი</div>
+          <div class="action-item"><div class="dot"></div>არ გახსნა ფაილი</div>
+          <div class="action-item"><div class="dot"></div>არ გიპასუხო</div>
+        </div>
+        <div class="action-box do">
+          <h4>✅ გააკეთე</h4>
+          <div class="action-item"><div class="dot"></div>მონიშნე Spam-ად</div>
+          <div class="action-item"><div class="dot"></div>წაშალე შეტყობინება</div>
+          <div class="action-item"><div class="dot"></div>აცნობე IT სამსახურს</div>
+          <div class="action-item"><div class="dot"></div>შეცვალე პაროლი</div>
+        </div>
+      </div>
+
+      <div class="alert">
+        <div class="alert-icon">🛡️</div>
+        <p>ლეგიტიმური IT სამსახური არასოდეს ითხოვს პაროლს ელ-ფოსტით. ეჭვის შემთხვევაში — ზარი სჯობს დაწკაპუნებას.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <a href="password-detail.html" class="nav-btn">← წინა თემა</a>
+    <a href="physical-detail.html" class="nav-btn next">შემდეგი თემა →</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const items = [
+      {text:'@',color:'rgba(231,76,60,0.07)',size:'32px'},
+      {text:'••••',color:'rgba(255,255,255,0.04)',size:'16px'},
+      {text:'@',color:'rgba(231,76,60,0.06)',size:'24px'},
+      {text:'http://',color:'rgba(231,76,60,0.05)',size:'13px'},
+      {text:'@',color:'rgba(231,76,60,0.07)',size:'28px'},
+      {text:'⚠',color:'rgba(231,76,60,0.06)',size:'22px'},
+      {text:'@',color:'rgba(231,76,60,0.05)',size:'20px'},
+      {text:'⚠',color:'rgba(231,76,60,0.05)',size:'18px'},
+      {text:'@',color:'rgba(231,76,60,0.07)',size:'26px'},
+      {text:'••••••••',color:'rgba(255,255,255,0.03)',size:'14px'},
+    ];
+    items.forEach((item, i) => {
+      const el = document.createElement('div');
+      el.className = 'float-item';
+      el.textContent = item.text;
+      el.style.color = item.color;
+      el.style.fontSize = item.size;
+      el.style.left = (3 + i * 9.5) + '%';
+      el.style.animationDuration = (10 + Math.random() * 8) + 's';
+      el.style.animationDelay = (Math.random() * 10) + 's';
+      canvas.appendChild(el);
+    });
+  </script>
+
+</body>
+</html>
