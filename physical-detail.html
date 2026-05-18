@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>მოწყობილობების ფიზიკური უსაფრთხოება</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Source Sans 3',sans-serif; color:#fff; background:#0d1b2e; overflow-x:hidden; }
+
+    .bg-canvas { position:fixed; top:0; left:0; right:0; bottom:0; z-index:0; pointer-events:none; overflow:hidden; }
+    .float-item { position:absolute; animation:floatUp linear infinite; user-select:none; pointer-events:none; }
+    @keyframes floatUp { 0%{transform:translateY(110vh);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateY(-20vh);opacity:0} }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes slideIn { from{opacity:0;transform:translateX(-16px)} to{opacity:1;transform:translateX(0)} }
+
+    header { position:sticky; top:0; z-index:10; background:#C41E23; color:#fff; padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:64px; border-bottom:4px solid #8B0000; }
+    .logo { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; }
+    .logo span { font-weight:400; opacity:0.85; font-size:15px; margin-left:8px; }
+    .back-btn { color:rgba(255,255,255,0.85); text-decoration:none; font-size:14px; font-weight:500; }
+    .back-btn:hover { color:#fff; }
+
+    .hero-photo { position:relative; z-index:1; background:#0d1b2e; padding:2rem 3rem 0; display:flex; justify-content:center; }
+    .hero-photo-wrap { position:relative; max-width:480px; width:100%; border-radius:16px; overflow:hidden; }
+    .hero-photo-wrap img { width:100%; display:block; border-radius:16px; }
+    .hero-fade { position:absolute; bottom:0; left:0; right:0; height:100px; background:linear-gradient(to bottom,transparent,#0d1b2e); }
+
+    .bottom-section { position:relative; z-index:1; padding:2rem 3rem; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; max-width:1100px; margin:0 auto; }
+    .topic-label { font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:#3498db; margin-bottom:0.75rem; }
+    .content-title { font-family:'Playfair Display',serif; font-size:30px; font-weight:700; color:#fff; margin-bottom:0.5rem; line-height:1.25; }
+    .title-line { width:44px; height:3px; background:#3498db; margin-bottom:1.75rem; border-radius:2px; }
+    .content-text { font-size:15px; line-height:1.85; color:rgba(255,255,255,0.75); margin-bottom:1.25rem; }
+
+    .infographic { background:#0f1e35; border-radius:16px; padding:1.5rem; animation:fadeIn 0.6s ease; }
+    .info-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:#fff; margin-bottom:1.25rem; }
+
+    .tip-card { background:#152438; border:0.5px solid rgba(255,255,255,0.08); border-radius:10px; padding:1rem; margin-bottom:10px; display:flex; gap:12px; align-items:flex-start; transition:border-color 0.2s,transform 0.2s; animation:slideIn 0.5s ease both; }
+    .tip-card:hover { border-color:#3498db; transform:translateX(4px); }
+    .tip-card:nth-child(1){animation-delay:0.1s}
+    .tip-card:nth-child(2){animation-delay:0.2s}
+    .tip-card:nth-child(3){animation-delay:0.3s}
+    .tip-card:nth-child(4){animation-delay:0.4s}
+    .tip-icon { font-size:22px; flex-shrink:0; }
+    .tip-body h4 { font-size:14px; font-weight:700; color:#fff; margin-bottom:4px; }
+    .tip-body p { font-size:12px; color:rgba(255,255,255,0.55); line-height:1.5; }
+
+    .win-box { background:#1a2e45; border:1px solid #3498db; border-radius:10px; padding:1rem; margin-bottom:10px; display:flex; align-items:center; gap:14px; animation:fadeIn 0.6s 0.5s ease both; }
+    .win-key { background:#3498db; color:#fff; font-size:15px; font-weight:700; padding:8px 14px; border-radius:8px; letter-spacing:1px; flex-shrink:0; animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+    .win-text { font-size:13px; color:rgba(255,255,255,0.75); line-height:1.5; }
+
+    .alert { background:rgba(241,196,15,0.1); border:1px solid rgba(241,196,15,0.3); border-radius:10px; padding:1rem; display:flex; gap:10px; align-items:flex-start; margin-top:10px; animation:fadeIn 0.6s 0.6s ease both; }
+    .alert-icon { font-size:20px; flex-shrink:0; }
+    .alert p { font-size:12px; color:rgba(255,255,255,0.65); line-height:1.5; }
+
+    /* ქვედა ბარათები */
+    .cards-section { position:relative; z-index:1; padding:0 3rem 3rem; max-width:1100px; margin:0 auto; }
+    .cards-title { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:#fff; margin-bottom:0.5rem; }
+    .cards-line { width:40px; height:3px; background:#3498db; margin-bottom:2rem; border-radius:2px; }
+    .cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+    .rule-card { background:#0f1e35; border:0.5px solid rgba(255,255,255,0.08); border-radius:12px; padding:1.5rem; transition:border-color 0.2s,transform 0.2s; animation:fadeIn 0.6s ease both; }
+    .rule-card:hover { border-color:#3498db; transform:translateY(-3px); }
+    .rule-card:nth-child(1){animation-delay:0.1s}
+    .rule-card:nth-child(2){animation-delay:0.2s}
+    .rule-card:nth-child(3){animation-delay:0.3s}
+    .rule-card:nth-child(4){animation-delay:0.4s}
+    .rule-icon { font-size:26px; margin-bottom:10px; display:block; }
+    .rule-card h4 { font-size:14px; font-weight:700; color:#fff; margin-bottom:6px; }
+    .rule-card p { font-size:12px; color:rgba(255,255,255,0.55); line-height:1.6; }
+
+    .nav-bottom { position:relative; z-index:1; background:#091422; border-top:0.5px solid rgba(255,255,255,0.08); padding:1.5rem 2rem; display:flex; justify-content:space-between; align-items:center; }
+    .nav-btn { color:rgba(255,255,255,0.6); text-decoration:none; font-size:14px; font-weight:500; }
+    .nav-btn:hover { color:#fff; }
+    .nav-btn.next { color:#3498db; }
+
+    @media(max-width:700px) { .hero-photo{padding:1.5rem 1rem 0} .bottom-section,.cards-section{padding-left:1rem;padding-right:1rem} .bottom-section{grid-template-columns:1fr;gap:2rem;padding-bottom:2rem} .content-title{font-size:24px} }
+  </style>
+</head>
+<body>
+
+  <div class="bg-canvas" id="bg-canvas"></div>
+
+  <header>
+    <a href="index.html" style="text-decoration:none; color:#fff;">
+      <div class="logo">Retail Pro <span>| სასწავლო პლატფორმა</span></div>
+    </a>
+    <a href="tema3.html" class="back-btn">← უკან</a>
+  </header>
+
+  <div class="hero-photo">
+    <div class="hero-photo-wrap">
+      <img src="physical-hero.png" alt="ფიზიკური უსაფრთხოება"/>
+      <div class="hero-fade"></div>
+    </div>
+  </div>
+
+  <div class="bottom-section">
+    <div>
+      <div class="topic-label">თემა 03 · ქსელის უსაფრთხოება</div>
+      <div class="content-title">მოწყობილობების ფიზიკური უსაფრთხოება</div>
+      <div class="title-line"></div>
+      <p class="content-text">სამუშაო ადგილის დატოვებისას კომპიუტერის დაბლოკვა ერთ-ერთი უმარტივესი, მაგრამ ყველაზე მნიშვნელოვანი ჩვევაა. საკმარისია დააჭიროთ Win + L და ეკრანი დაიბლოკება. ეს ხელს უშლის უნებართვო პირს თქვენს კომპიუტერზე წვდომაში, თუნდაც მოკლე შესვენების დროს.</p>
+      <p class="content-text">USB მოწყობილობები განსაკუთრებული საფრთხის წყაროა. უცნობი ფლეშ-დრაივი შეიძლება შეიცავდეს მავნე პროგრამას, რომელიც ავტომატურად დაინსტალირდება სისტემაში შეერთებისთანავე. არასოდეს გამოიყენოთ ისეთი USB მოწყობილობა, რომლის წარმომავლობა არ იცით.</p>
+      <p class="content-text">გარდა ამისა, მნიშვნელოვანია სამუშაო სივრცის ფიზიკური წესრიგიც. მონიტორი ისე განათავსეთ, რომ გვერდიდან გამვლელმა ვერ დაინახოს კონფიდენციალური ინფორმაცია. სამუშაო დღის ბოლოს კომპიუტერი სრულად გამორთეთ და მნიშვნელოვანი დოკუმენტები ჩაკეტილ ადგილას შეინახეთ.</p>
+    </div>
+
+    <div class="infographic">
+      <div class="info-title">მთავარი წესები</div>
+
+      <div class="tip-card">
+        <div class="tip-icon">🔒</div>
+        <div class="tip-body">
+          <h4>ეკრანის დაბლოკვა</h4>
+          <p>ყოველთვის დაბლოკეთ ეკრანი სამუშაო ადგილიდან წასვლისას — თუნდაც წყლის მისაღებად.</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-icon">🔌</div>
+        <div class="tip-body">
+          <h4>USB კონტროლი</h4>
+          <p>გამოიყენეთ მხოლოდ კომპანიის მიერ დამტკიცებული USB მოწყობილობები.</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-icon">👁️</div>
+        <div class="tip-body">
+          <h4>ეკრანის განლაგება</h4>
+          <p>მონიტორი ისე განათავსეთ, რომ გვერდიდან გამვლელმა ვერ დაინახოს კონფიდენციალური მონაცემები.</p>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-icon">🌙</div>
+        <div class="tip-body">
+          <h4>სამუშაო დღის დასასრული</h4>
+          <p>კომპიუტერი სრულად გამორთეთ და მნიშვნელოვანი დოკუმენტები ჩაკეტილ ადგილას შეინახეთ.</p>
+        </div>
+      </div>
+
+      <div class="win-box">
+        <div class="win-key">Win + L</div>
+        <div class="win-text">სწრაფი კომბინაცია ეკრანის დასაბლოკად — გამოიყენეთ ყოველთვის, როცა ადგილიდან დგებით.</div>
+      </div>
+
+      <div class="alert">
+        <div class="alert-icon">⚠️</div>
+        <p>იყავით ფრთხილად! არ გამოიყენოთ უცნობი USB მოწყობილობა და არ დაუშვათ უნებართვო პირი კომპიუტერთან.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-section">
+    <div class="cards-title">სხვა მნიშვნელოვანი ჩვევები</div>
+    <div class="cards-line"></div>
+    <div class="cards-grid">
+      <div class="rule-card">
+        <span class="rule-icon">📄</span>
+        <h4>დოკუმენტების უსაფრთხოება</h4>
+        <p>კონფიდენციალური დოკუმენტები არ დატოვოთ ღიად მაგიდაზე — ჩაკეტეთ ან გაანადგურეთ შრედერით.</p>
+      </div>
+      <div class="rule-card">
+        <span class="rule-icon">🖨️</span>
+        <h4>პრინტერის კონტროლი</h4>
+        <p>დაბეჭდილი დოკუმენტები დაუყოვნებლივ აიღეთ პრინტერიდან — ნუ დატოვებთ სხვისთვის ხელმისაწვდომს.</p>
+      </div>
+      <div class="rule-card">
+        <span class="rule-icon">📱</span>
+        <h4>პირადი მოწყობილობები</h4>
+        <p>პირადი ტელეფონი ან ლეპტოპი კომპანიის ქსელთან არ დააკავშიროთ IT სამსახურის ნებართვის გარეშე.</p>
+      </div>
+      <div class="rule-card">
+        <span class="rule-icon">🚪</span>
+        <h4>წვდომის კონტროლი</h4>
+        <p>სამსახურის გასაღები და ბარათი სხვას ნუ გასესხებთ — ყველას საკუთარი სჭირდება.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <a href="phishing-detail.html" class="nav-btn">← წინა თემა</a>
+    <a href="incident-detail.html" class="nav-btn next">შემდეგი თემა →</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const items = [
+      {text:'🔒',color:'rgba(52,152,219,0.08)',size:'28px'},
+      {text:'••••',color:'rgba(255,255,255,0.04)',size:'16px'},
+      {text:'🔒',color:'rgba(52,152,219,0.07)',size:'22px'},
+      {text:'Win+L',color:'rgba(52,152,219,0.05)',size:'13px'},
+      {text:'🔒',color:'rgba(52,152,219,0.08)',size:'26px'},
+      {text:'USB',color:'rgba(52,152,219,0.04)',size:'13px'},
+      {text:'🔒',color:'rgba(52,152,219,0.06)',size:'20px'},
+      {text:'••••••',color:'rgba(255,255,255,0.03)',size:'14px'},
+      {text:'🔒',color:'rgba(52,152,219,0.07)',size:'24px'},
+      {text:'Win+L',color:'rgba(52,152,219,0.04)',size:'12px'},
+      {text:'🔒',color:'rgba(52,152,219,0.05)',size:'18px'},
+      {text:'USB',color:'rgba(52,152,219,0.03)',size:'12px'},
+    ];
+    items.forEach((item, i) => {
+      const el = document.createElement('div');
+      el.className = 'float-item';
+      el.textContent = item.text;
+      el.style.color = item.color;
+      el.style.fontSize = item.size;
+      el.style.left = (3 + i * 8) + '%';
+      el.style.animationDuration = (10 + Math.random() * 8) + 's';
+      el.style.animationDelay = (Math.random() * 10) + 's';
+      canvas.appendChild(el);
+    });
+  </script>
+
+</body>
+</html>
