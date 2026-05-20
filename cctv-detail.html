@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>კამერების სისტემა</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Source Sans 3',sans-serif; color:#fff; background:#0a0f1a; overflow-x:hidden; }
+    .bg-canvas { position:fixed; top:0; left:0; right:0; bottom:0; z-index:0; pointer-events:none; overflow:hidden; }
+    .float-item { position:absolute; animation:floatUp linear infinite; user-select:none; pointer-events:none; }
+    @keyframes floatUp { 0%{transform:translateY(110vh);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateY(-20vh);opacity:0} }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes slideIn { from{opacity:0;transform:translateX(-16px)} to{opacity:1;transform:translateX(0)} }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    header { position:sticky; top:0; z-index:10; background:#C41E23; color:#fff; padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:64px; border-bottom:4px solid #8B0000; }
+    .logo { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; }
+    .logo span { font-weight:400; opacity:0.85; font-size:15px; margin-left:8px; }
+    .back-btn { color:rgba(255,255,255,0.85); text-decoration:none; font-size:14px; font-weight:500; }
+    .back-btn:hover { color:#fff; }
+    .hero-photo { position:relative; z-index:1; background:#0a0f1a; padding:2rem 3rem 0; display:flex; justify-content:center; }
+    .hero-photo-wrap { position:relative; max-width:600px; width:100%; border-radius:16px; overflow:hidden; }
+    .hero-photo-wrap img { width:100%; display:block; border-radius:16px; }
+    .hero-fade { position:absolute; bottom:0; left:0; right:0; height:100px; background:linear-gradient(to bottom,transparent,#0a0f1a); }
+    .rec-dot { position:absolute; top:16px; left:16px; display:flex; align-items:center; gap:6px; background:rgba(0,0,0,0.6); padding:4px 10px; border-radius:20px; font-size:12px; font-weight:600; }
+    .rec-circle { width:8px; height:8px; border-radius:50%; background:#e74c3c; animation:blink 1s infinite; }
+    .bottom-section { position:relative; z-index:1; padding:2rem 3rem; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start; max-width:1100px; margin:0 auto; }
+    .topic-label { font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:#e74c3c; margin-bottom:0.75rem; }
+    .content-title { font-family:'Playfair Display',serif; font-size:30px; font-weight:700; color:#fff; margin-bottom:0.5rem; line-height:1.25; }
+    .title-line { width:44px; height:3px; background:#e74c3c; margin-bottom:1.75rem; border-radius:2px; }
+    .content-text { font-size:15px; line-height:1.85; color:rgba(255,255,255,0.75); margin-bottom:1.25rem; }
+    .infographic { background:#0f1a2e; border-radius:16px; padding:1.5rem; border:0.5px solid rgba(231,76,60,0.2); }
+    .info-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:#fff; margin-bottom:1.25rem; }
+    .tip-card { background:#152438; border:0.5px solid rgba(255,255,255,0.08); border-radius:10px; padding:1rem; margin-bottom:10px; display:flex; gap:12px; align-items:flex-start; transition:border-color 0.2s,transform 0.2s; animation:slideIn 0.5s ease both; }
+    .tip-card:hover { border-color:#e74c3c; transform:translateX(4px); }
+    .tip-card:nth-child(1){animation-delay:0.1s} .tip-card:nth-child(2){animation-delay:0.2s} .tip-card:nth-child(3){animation-delay:0.3s} .tip-card:nth-child(4){animation-delay:0.4s}
+    .tip-icon { font-size:22px; flex-shrink:0; }
+    .tip-body h4 { font-size:14px; font-weight:700; color:#fff; margin-bottom:4px; }
+    .tip-body p { font-size:12px; color:rgba(255,255,255,0.55); line-height:1.5; }
+    .cards-section { position:relative; z-index:1; padding:0 3rem 3rem; max-width:1100px; margin:0 auto; }
+    .cards-title { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; margin-bottom:0.5rem; }
+    .cards-line { width:40px; height:3px; background:#e74c3c; margin-bottom:2rem; border-radius:2px; }
+    .cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+    .rule-card { background:#0f1a2e; border:0.5px solid rgba(231,76,60,0.15); border-radius:12px; padding:1.5rem; transition:border-color 0.2s,transform 0.2s; animation:fadeIn 0.6s ease both; }
+    .rule-card:hover { border-color:#e74c3c; transform:translateY(-3px); }
+    .rule-card:nth-child(1){animation-delay:0.1s} .rule-card:nth-child(2){animation-delay:0.2s} .rule-card:nth-child(3){animation-delay:0.3s} .rule-card:nth-child(4){animation-delay:0.4s}
+    .rule-icon { font-size:26px; margin-bottom:10px; display:block; }
+    .rule-card h4 { font-size:14px; font-weight:700; margin-bottom:6px; }
+    .rule-card p { font-size:12px; color:rgba(255,255,255,0.55); line-height:1.6; }
+    .alert { background:rgba(231,76,60,0.1); border:1px solid rgba(231,76,60,0.3); border-radius:10px; padding:1rem; display:flex; gap:10px; margin-top:10px; }
+    .alert p { font-size:12px; color:rgba(255,255,255,0.65); line-height:1.5; }
+    .nav-bottom { position:relative; z-index:1; background:#060d18; border-top:0.5px solid rgba(255,255,255,0.08); padding:1.5rem 2rem; display:flex; justify-content:space-between; }
+    .nav-btn { color:rgba(255,255,255,0.6); text-decoration:none; font-size:14px; font-weight:500; }
+    .nav-btn:hover { color:#fff; }
+    .nav-btn.next { color:#e74c3c; }
+    @media(max-width:700px) { .hero-photo{padding:1.5rem 1rem 0} .bottom-section,.cards-section{padding-left:1rem;padding-right:1rem} .bottom-section{grid-template-columns:1fr;gap:2rem} .content-title{font-size:24px} }
+  </style>
+</head>
+<body>
+  <div class="bg-canvas" id="bg-canvas"></div>
+  <header>
+    <a href="index.html" style="text-decoration:none;color:#fff;">
+      <div class="logo">Retail Pro <span>| სასწავლო პლატფორმა</span></div>
+    </a>
+    <a href="tema4.html" class="back-btn">← უკან</a>
+  </header>
+
+  <div class="hero-photo">
+    <div class="hero-photo-wrap">
+      <img src="cctv.png" alt="კამერების სისტემა"/>
+      <div class="rec-dot"><div class="rec-circle"></div> REC</div>
+      <div class="hero-fade"></div>
+    </div>
+  </div>
+
+  <div class="bottom-section">
+    <div>
+      <div class="topic-label">თემა 04 · დამხმარე სისტემები</div>
+      <div class="content-title">კამერების სისტემა (CCTV)</div>
+      <div class="title-line"></div>
+      <p class="content-text">CCTV (Closed-Circuit Television) არის სამეთვალყურეო კამერების სისტემა, რომელიც ფილიალში უსაფრთხოების უზრუნველყოფისა და მონიტორინგის მთავარი ინსტრუმენტია. კამერები ჩასაწერ მოწყობილობასთან — NVR-თან — არის დაკავშირებული და ვიდეოჩანაწერს მუდმივად ინახავს.</p>
+      <p class="content-text">მენეჯერს შეუძლია კამერების სურათი პირდაპირ მონიტორზე ან iVMS-4200 პროგრამის საშუალებით დაათვალიეროს. ჩანაწერის ნახვა კი შესაძლებელია Remote Playback ფუნქციით — საჭიროა მხოლოდ თარიღი და დრო.</p>
+      <p class="content-text">ჩანაწერები ინახება NVR-ის მყარ დისკზე. შენახვის ვადა დამოკიდებულია დისკის მოცულობასა და კამერების რაოდენობაზე — ჩვეულებრივ 7-დან 30 დღემდე.</p>
+    </div>
+    <div class="infographic">
+      <div class="info-title">📹 მთავარი ფუნქციები</div>
+      <div class="tip-card">
+        <div class="tip-icon">👁️</div>
+        <div class="tip-body"><h4>რეალურ დროში მონიტორინგი</h4><p>iVMS-4200 პროგრამით ყველა კამერის სურათი ერთდროულად ჩანს.</p></div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">⏪</div>
+        <div class="tip-body"><h4>ჩანაწერის ნახვა</h4><p>Remote Playback — აირჩიე კამერა, თარიღი და დრო.</p></div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">💾</div>
+        <div class="tip-body"><h4>ჩაწერა და შენახვა</h4><p>NVR ავტომატურად ჩაწერს და ძველ ჩანაწერს გადაწერს შენახვის ვადის გასვლისას.</p></div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📱</div>
+        <div class="tip-body"><h4>დისტანციური წვდომა</h4><p>Hik-Connect აპლიკაციით კამერები ტელეფონიდანაც ჩანს.</p></div>
+      </div>
+      <div class="alert">
+        <div style="font-size:20px;flex-shrink:0;">⚠️</div>
+        <p>კამერის გამოსახულება დაიკარგა? შეამოწმე კაბელი და NVR. თუ ვერ გაასწორე — IT სამსახურს მიმართე.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-section">
+    <div class="cards-title">შესაძლო პრობლემები</div>
+    <div class="cards-line"></div>
+    <div class="cards-grid">
+      <div class="rule-card"><span class="rule-icon">📺</span><h4>კამერა არ ჩანს</h4><p>შეამოწმე კაბელი და კვება. NVR-ზე შეამოწმე კამერის სტატუსი.</p></div>
+      <div class="rule-card"><span class="rule-icon">🌑</span><h4>მუქი ან ბუნდოვანი სურათი</h4><p>კამერის ობიექტივი შეიძლება დასვრილი იყოს — გაწმინდე ფრთხილად.</p></div>
+      <div class="rule-card"><span class="rule-icon">💽</span><h4>ჩანაწერი არ ინახება</h4><p>NVR-ის მყარი დისკი შეიძლება სავსე ან გაფუჭებული იყოს — IT-ს მიმართე.</p></div>
+      <div class="rule-card"><span class="rule-icon">🌐</span><h4>დისტანციური წვდომა არ მუშაობს</h4><p>ინტერნეტ კავშირი ან Hik-Connect კონფიგურაცია — IT სამსახურს დაუკავშირდი.</p></div>
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <a href="tema4.html" class="nav-btn">← უკან</a>
+    <a href="1c-detail.html" class="nav-btn next">შემდეგი: 1C →</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const items = [
+      {text:'📹',color:'rgba(231,76,60,0.06)',size:'24px'},
+      {text:'REC',color:'rgba(231,76,60,0.05)',size:'12px'},
+      {text:'📹',color:'rgba(231,76,60,0.05)',size:'20px'},
+      {text:'●',color:'rgba(231,76,60,0.07)',size:'14px'},
+      {text:'📹',color:'rgba(231,76,60,0.06)',size:'28px'},
+      {text:'REC',color:'rgba(231,76,60,0.04)',size:'11px'},
+      {text:'📹',color:'rgba(231,76,60,0.05)',size:'18px'},
+      {text:'●',color:'rgba(231,76,60,0.06)',size:'12px'},
+      {text:'📹',color:'rgba(231,76,60,0.04)',size:'22px'},
+      {text:'REC',color:'rgba(231,76,60,0.03)',size:'10px'},
+    ];
+    items.forEach((item,i) => {
+      const el = document.createElement('div');
+      el.className = 'float-item';
+      el.textContent = item.text;
+      el.style.color = item.color;
+      el.style.fontSize = item.size;
+      el.style.left = (3 + i*9.5)+'%';
+      el.style.animationDuration = (10+Math.random()*8)+'s';
+      el.style.animationDelay = (Math.random()*10)+'s';
+      canvas.appendChild(el);
+    });
+  </script>
+</body>
+</html>

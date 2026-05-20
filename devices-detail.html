@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>მოწყობილობების კავშირი</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Source Sans 3',sans-serif; color:#fff; background:#0d1b2e; overflow-x:hidden; }
+    .bg-canvas { position:fixed; top:0; left:0; right:0; bottom:0; z-index:0; pointer-events:none; overflow:hidden; }
+    .float-item { position:absolute; animation:floatUp linear infinite; user-select:none; pointer-events:none; }
+    @keyframes floatUp { 0%{transform:translateY(110vh);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateY(-20vh);opacity:0} }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes slideIn { from{opacity:0;transform:translateX(-16px)} to{opacity:1;transform:translateX(0)} }
+    header { position:sticky; top:0; z-index:10; background:#C41E23; color:#fff; padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:64px; border-bottom:4px solid #8B0000; }
+    .logo { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; }
+    .logo span { font-weight:400; opacity:0.85; font-size:15px; margin-left:8px; }
+    .back-btn { color:rgba(255,255,255,0.85); text-decoration:none; font-size:14px; font-weight:500; }
+
+    /* ინფოგრაფიკა ზემოთ */
+    .hero-infographic { position:relative; z-index:1; background:#0d1b2e; padding:2rem 3rem 0; display:flex; justify-content:center; }
+    .infographic-wrap { max-width:700px; width:100%; background:#0f1e35; border-radius:16px; padding:2rem; border:0.5px solid rgba(46,204,113,0.2); }
+
+    @keyframes pulse2 { 0%,100%{opacity:1} 50%{opacity:0.5} }
+    .diagram { display:flex; align-items:center; justify-content:center; gap:0; margin-bottom:1.5rem; }
+    .center-pc { background:#1a2e45; border:2px solid #2ecc71; border-radius:12px; padding:1rem 1.5rem; text-align:center; z-index:2; }
+    .center-pc .pc-icon { font-size:32px; display:block; margin-bottom:4px; }
+    .center-pc span { font-size:13px; font-weight:700; color:#2ecc71; }
+    .devices-left, .devices-right { display:flex; flex-direction:column; gap:10px; }
+    .device-item { background:#152438; border:0.5px solid rgba(255,255,255,0.1); border-radius:10px; padding:8px 12px; display:flex; align-items:center; gap:8px; min-width:150px; transition:border-color 0.2s; animation:fadeIn 0.5s ease both; }
+    .device-item:hover { border-color:#2ecc71; }
+    .devices-left .device-item { flex-direction:row-reverse; }
+    .device-icon { font-size:20px; flex-shrink:0; }
+    .device-name { font-size:12px; font-weight:600; color:#fff; }
+    .device-sub { font-size:10px; color:rgba(255,255,255,0.45); }
+    .conn-line { display:flex; align-items:center; gap:6px; padding:0 6px; }
+    .line { height:2px; width:36px; background:linear-gradient(to right,#2ecc71,rgba(46,204,113,0.3)); border-radius:1px; }
+    .line.rev { background:linear-gradient(to left,#2ecc71,rgba(46,204,113,0.3)); }
+    .info-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:1.25rem; }
+    .info-card { background:#152438; border:0.5px solid rgba(255,255,255,0.08); border-radius:10px; padding:0.875rem; transition:border-color 0.2s,transform 0.2s; animation:fadeIn 0.5s ease both; }
+    .info-card:hover { border-color:#2ecc71; transform:translateY(-2px); }
+    .info-card:nth-child(1){animation-delay:0.2s} .info-card:nth-child(2){animation-delay:0.3s} .info-card:nth-child(3){animation-delay:0.4s}
+    .info-icon { font-size:20px; margin-bottom:6px; display:block; }
+    .info-card h4 { font-size:12px; font-weight:700; color:#fff; margin-bottom:3px; }
+    .info-card p { font-size:11px; color:rgba(255,255,255,0.5); line-height:1.5; }
+    .driver-box { background:#1a2e45; border:1px solid #2ecc71; border-radius:10px; padding:1rem; display:flex; gap:12px; margin-bottom:10px; }
+    .driver-box h4 { font-size:13px; font-weight:700; color:#2ecc71; margin-bottom:3px; }
+    .driver-box p { font-size:12px; color:rgba(255,255,255,0.65); line-height:1.5; }
+    .hero-fade { height:60px; background:linear-gradient(to bottom,transparent,#0d1b2e); margin:-1px -2rem 0; }
+
+    .bottom-section { position:relative; z-index:1; padding:2rem 3rem; display:grid; grid-template-columns:1fr 1fr; gap:3rem; max-width:1100px; margin:0 auto; }
+    .topic-label { font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:#2ecc71; margin-bottom:0.75rem; }
+    .content-title { font-family:'Playfair Display',serif; font-size:30px; font-weight:700; color:#fff; margin-bottom:0.5rem; }
+    .title-line { width:44px; height:3px; background:#2ecc71; margin-bottom:1.75rem; border-radius:2px; }
+    .content-text { font-size:15px; line-height:1.85; color:rgba(255,255,255,0.75); margin-bottom:1.25rem; }
+    .cards-section { position:relative; z-index:1; padding:0 3rem 3rem; max-width:1100px; margin:0 auto; }
+    .cards-title { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; margin-bottom:0.5rem; }
+    .cards-line { width:40px; height:3px; background:#2ecc71; margin-bottom:2rem; border-radius:2px; }
+    .cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+    .rule-card { background:#0f1e35; border:0.5px solid rgba(46,204,113,0.15); border-radius:12px; padding:1.5rem; transition:border-color 0.2s,transform 0.2s; animation:fadeIn 0.6s ease both; }
+    .rule-card:hover { border-color:#2ecc71; transform:translateY(-3px); }
+    .rule-card:nth-child(1){animation-delay:0.1s} .rule-card:nth-child(2){animation-delay:0.2s} .rule-card:nth-child(3){animation-delay:0.3s} .rule-card:nth-child(4){animation-delay:0.4s}
+    .rule-icon { font-size:26px; margin-bottom:10px; display:block; }
+    .rule-card h4 { font-size:14px; font-weight:700; margin-bottom:6px; }
+    .rule-card p { font-size:12px; color:rgba(255,255,255,0.55); line-height:1.6; }
+    .nav-bottom { position:relative; z-index:1; background:#091422; border-top:0.5px solid rgba(255,255,255,0.08); padding:1.5rem 2rem; display:flex; justify-content:space-between; }
+    .nav-btn { color:rgba(255,255,255,0.6); text-decoration:none; font-size:14px; font-weight:500; }
+    .nav-btn:hover { color:#fff; }
+    .nav-btn.next { color:#2ecc71; }
+    @media(max-width:700px) { .hero-infographic{padding:1.5rem 1rem 0} .bottom-section,.cards-section{padding-left:1rem;padding-right:1rem} .bottom-section{grid-template-columns:1fr;gap:2rem} .content-title{font-size:24px} .diagram{flex-direction:column;gap:10px} .info-grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="bg-canvas" id="bg-canvas"></div>
+  <header>
+    <a href="index.html" style="text-decoration:none;color:#fff;">
+      <div class="logo">Retail Pro <span>| სასწავლო პლატფორმა</span></div>
+    </a>
+    <a href="tema4.html" class="back-btn">← უკან</a>
+  </header>
+
+  <div class="hero-infographic">
+    <div class="infographic-wrap">
+      <div class="diagram">
+        <div class="devices-left">
+          <div class="device-item" style="animation-delay:0.1s"><div><div class="device-name">თერმული პრინტერი</div><div class="device-sub">USB კაბელი</div></div><div class="device-icon">🖨️</div></div>
+          <div class="device-item" style="animation-delay:0.2s"><div><div class="device-name">ფისკალური აპარატი</div><div class="device-sub">USB / COM პორტი</div></div><div class="device-icon">🧾</div></div>
+          <div class="device-item" style="animation-delay:0.3s"><div><div class="device-name">HP პრინტერი</div><div class="device-sub">USB / WiFi</div></div><div class="device-icon">🖨️</div></div>
+        </div>
+        <div class="conn-line"><div class="line rev"></div><div class="center-pc"><span class="pc-icon">💻</span><span>კომპიუტერი</span></div><div class="line"></div></div>
+        <div class="devices-right">
+          <div class="device-item" style="animation-delay:0.1s"><div class="device-icon">💳</div><div><div class="device-name">საბანკო ტერმინალი</div><div class="device-sub">USB / Ethernet</div></div></div>
+          <div class="device-item" style="animation-delay:0.2s"><div class="device-icon">🔍</div><div><div class="device-name">სკანერი</div><div class="device-sub">USB კაბელი</div></div></div>
+          <div class="device-item" style="animation-delay:0.3s"><div class="device-icon">🖥️</div><div><div class="device-name">POS მონიტორი</div><div class="device-sub">HDMI / VGA</div></div></div>
+        </div>
+      </div>
+      <div class="info-grid">
+        <div class="info-card"><span class="info-icon">🔌</span><h4>USB კავშირი</h4><p>შეაერთე კაბელი — კომპიუტერი ავტომატურად ცნობს.</p></div>
+        <div class="info-card"><span class="info-icon">📡</span><h4>WiFi / Ethernet</h4><p>ქსელური კავშირი — ერთ ქსელში უნდა იყოს.</p></div>
+        <div class="info-card"><span class="info-icon">🔧</span><h4>COM პორტი</h4><p>ძველი ტიპის კავშირი — ფისკალური აპარატებისთვის.</p></div>
+      </div>
+      <div class="driver-box">
+        <div style="font-size:24px;flex-shrink:0;">⚙️</div>
+        <div><h4>დრაივერი (Driver)</h4><p>პროგრამა რომელიც კომპიუტერს ასწავლის მოწყობილობასთან მუშაობას. ავტომატურად ან IT-ის მეშვეობით ინსტალირდება.</p></div>
+      </div>
+      <div class="hero-fade"></div>
+    </div>
+  </div>
+
+  <div class="bottom-section">
+    <div>
+      <div class="topic-label">თემა 04 · დამხმარე სისტემები</div>
+      <div class="content-title">მოწყობილობების კავშირი კომპიუტერთან</div>
+      <div class="title-line"></div>
+      <p class="content-text">ფილიალში გამოყენებული ყველა მოწყობილობა — პრინტერი, სკანერი, ფისკალური აპარატი, საბანკო ტერმინალი — კომპიუტერთან სხვადასხვა გზით უკავშირდება. ყველაზე გავრცელებული მეთოდია USB კაბელი, რომელიც ჩართვისთანავე ავტომატურად ამყარებს კავშირს.</p>
+      <p class="content-text">ქსელური მოწყობილობები — როგორიცაა ზოგიერთი პრინტერი ან საბანკო ტერმინალი — WiFi ან Ethernet კაბელით უკავშირდება. ამ შემთხვევაში მნიშვნელოვანია, რომ მოწყობილობა და კომპიუტერი ერთ ქსელში იყოს.</p>
+      <p class="content-text">თუ მოწყობილობა კომპიუტერმა ვერ ამოიცნო — სავარაუდოდ დრაივერია საჭირო. დრაივერი არის პატარა პროგრამა, რომელიც კომპიუტერს ასწავლის მოწყობილობასთან "საუბარს". ამ შემთხვევაში IT სამსახურს მიმართეთ.</p>
+    </div>
+    <div>
+      <div style="background:#0f1e35;border-radius:16px;padding:1.5rem;border:0.5px solid rgba(46,204,113,0.2);">
+        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;margin-bottom:1.25rem;">🛠️ გამართვის ნაბიჯები</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="background:#152438;border-radius:10px;padding:0.875rem;display:flex;gap:10px;animation:slideIn 0.5s 0.1s ease both;">
+            <div style="background:#2ecc71;color:#fff;font-size:12px;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">კაბელი შეამოწმე</div><div style="font-size:11px;color:rgba(255,255,255,0.55);">USB კაბელი სწორ პორტში უნდა იყოს ჩართული.</div></div>
+          </div>
+          <div style="background:#152438;border-radius:10px;padding:0.875rem;display:flex;gap:10px;animation:slideIn 0.5s 0.2s ease both;">
+            <div style="background:#2ecc71;color:#fff;font-size:12px;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">მოწყობილობა გადაერთე</div><div style="font-size:11px;color:rgba(255,255,255,0.55);">გამორთე და ხელახლა ჩართე — ზოგჯერ ეს ეხმარება.</div></div>
+          </div>
+          <div style="background:#152438;border-radius:10px;padding:0.875rem;display:flex;gap:10px;animation:slideIn 0.5s 0.3s ease both;">
+            <div style="background:#2ecc71;color:#fff;font-size:12px;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">Device Manager შეამოწმე</div><div style="font-size:11px;color:rgba(255,255,255,0.55);">Windows-ში ხაზგასმული ხატი ნიშნავს დრაივერის პრობლემას.</div></div>
+          </div>
+          <div style="background:#152438;border-radius:10px;padding:0.875rem;display:flex;gap:10px;animation:slideIn 0.5s 0.4s ease both;">
+            <div style="background:#C41E23;color:#fff;font-size:12px;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">!</div>
+            <div><div style="font-size:13px;font-weight:700;margin-bottom:3px;">IT სამსახურს მიმართე</div><div style="font-size:11px;color:rgba(255,255,255,0.55);">თუ ვერ გაასწორე — ნუ გააგრძელებ ცდებს, IT-ს დაუკავშირდი.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-section">
+    <div class="cards-title">შესაძლო პრობლემები</div>
+    <div class="cards-line"></div>
+    <div class="cards-grid">
+      <div class="rule-card"><span class="rule-icon">🔌</span><h4>მოწყობილობა არ ჩანს</h4><p>შეამოწმე USB კაბელი — შეიძლება კაბელი გაფუჭდა ან პორტი არ მუშაობს.</p></div>
+      <div class="rule-card"><span class="rule-icon">⚙️</span><h4>დრაივერი არ არის</h4><p>Windows-ი "?" ხატით მიუთითებს — IT-ს სჭირდება დრაივერის ინსტალაცია.</p></div>
+      <div class="rule-card"><span class="rule-icon">🖨️</span><h4>პრინტერი არ ბეჭდავს</h5><p>პრინტერი Default-ად დაყენებული უნდა იყოს. შეამოწმე Print Queue — ჩარჩენილი ამოცანები.</p></div>
+      <div class="rule-card"><span class="rule-icon">📡</span><h4>ქსელური მოწყობილობა წყვეტს</h4><p>WiFi სიგნალი სუსტია ან IP მისამართი შეიცვალა — IT-ს მიმართე.</p></div>
+    </div>
+  </div>
+
+  <div class="nav-bottom">
+    <a href="1c-detail.html" class="nav-btn">← წინა: 1C</a>
+    <a href="tema4.html" class="nav-btn next">თემა 4-ზე დაბრუნება →</a>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const items = [
+      {text:'🔌',color:'rgba(46,204,113,0.07)',size:'24px'},
+      {text:'USB',color:'rgba(46,204,113,0.05)',size:'13px'},
+      {text:'🔌',color:'rgba(46,204,113,0.06)',size:'20px'},
+      {text:'WiFi',color:'rgba(46,204,113,0.04)',size:'12px'},
+      {text:'🔌',color:'rgba(46,204,113,0.07)',size:'26px'},
+      {text:'USB',color:'rgba(46,204,113,0.04)',size:'11px'},
+      {text:'⚙️',color:'rgba(46,204,113,0.05)',size:'20px'},
+      {text:'🔌',color:'rgba(46,204,113,0.05)',size:'18px'},
+      {text:'WiFi',color:'rgba(46,204,113,0.03)',size:'11px'},
+      {text:'⚙️',color:'rgba(46,204,113,0.04)',size:'18px'},
+    ];
+    items.forEach((item,i) => {
+      const el = document.createElement('div');
+      el.className = 'float-item';
+      el.textContent = item.text;
+      el.style.color = item.color;
+      el.style.fontSize = item.size;
+      el.style.left = (3+i*9.5)+'%';
+      el.style.animationDuration = (10+Math.random()*8)+'s';
+      el.style.animationDelay = (Math.random()*10)+'s';
+      canvas.appendChild(el);
+    });
+  </script>
+</body>
+</html>
