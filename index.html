@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Retail Pro | სასწავლო პლატფორმა</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .hero {
+      position: relative;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      padding: 5rem 2.5rem;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    .hero-lines {
+      position: absolute; right: 0; top: 0; bottom: 0; width: 48%;
+      opacity: 0.04;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 48px, rgba(201,65,79,1) 48px, rgba(201,65,79,1) 49px);
+    }
+    .hero-deco {
+      position: absolute; right: 4%; top: 50%;
+      transform: translateY(-50%);
+      font-size: 280px; opacity: 0.45; pointer-events: none; line-height: 1;
+      filter: drop-shadow(0 0 60px rgba(201,65,79,0.6));
+    }
+
+    .hero-quote blockquote em {
+      color: #c9414f;
+      font-style: normal;
+    }
+      to { opacity: 1; transform: translateY(-50%) translateX(0); }
+    }
+    .hero-eyebrow {
+      font-size: 10px; letter-spacing: 3.5px; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px; font-weight: 700; line-height: 1.1;
+      letter-spacing: -0.5px; margin-bottom: 1.5rem;
+    }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    .hero p {
+      font-size: 16px; color: var(--text-muted);
+      line-height: 1.75; max-width: 400px; margin-bottom: 2.5rem;
+    }
+    .hero-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--accent-dark); color: #fff;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 14px 28px; text-decoration: none; transition: background 0.2s;
+    }
+    .hero-btn:hover { background: #a01f30; }
+
+    .modules { padding: 4rem 2.5rem; background: var(--bg2); }
+    .modules-label {
+      font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--text-dim); display: block; margin-bottom: 6px;
+    }
+    .modules-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px; font-weight: 700;
+    }
+    .modules-line { width: 44px; height: 1px; background: var(--accent); margin: 12px 0 2rem; }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1px;
+      background: rgba(255,255,255,0.05);
+    }
+    .theme-card {
+      background: var(--bg);
+      padding: 1.75rem 1.5rem;
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+      transition: background 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .theme-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: var(--accent);
+      transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;
+    }
+    .theme-card:hover { background: #1f1013; }
+    .theme-card:hover::after { transform: scaleX(1); }
+    .theme-num { font-size: 10px; letter-spacing: 2px; color: var(--accent); margin-bottom: 1rem; }
+    .theme-icon { font-size: 28px; margin-bottom: 1rem; display: block; }
+    .theme-card h3 { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+    .theme-card p { font-size: 12px; color: var(--text-dim); line-height: 1.6; margin-top: auto; }
+
+    .info {
+      padding: 4rem 2.5rem; background: var(--bg);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .info-eyebrow { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+    .info h2 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; margin-bottom: 1rem; line-height: 1.3; }
+    .info p { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem; }
+    .info-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.05); }
+    .stat { background: var(--bg2); padding: 1.5rem; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+    .stat-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); }
+
+    @media (max-width: 700px) {
+      .hero h1 { font-size: 36px; }
+      .hero { padding: 3rem 1.5rem; min-height: auto; }
+      .info { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 1.5rem; }
+      .modules { padding: 3rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="rp-header">
+    <a href="index.html" class="rp-logo-wrap">
+      <div class="rp-logo-icon">🍷</div>
+      <div>
+        <span class="rp-logo-text">Retail Pro</span>
+        <span class="rp-logo-sub">სასწავლო პლატფორმა</span>
+      </div>
+    </a>
+    <nav>
+      <a href="#modules">თემები</a>
+      <a href="#about">შესახებ</a>
+    </nav>
+  </header>
+
+  <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 2.5rem; background:#120a0c; border-top:1px solid rgba(255,255,255,0.04); border-bottom:1px solid rgba(255,255,255,0.04);">
+    <span style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.5); font-weight:600;">პარტნიორი</span>
+    <img src="logo-arg.PNG" alt="ARG" style="height:52px; max-width:200px; object-fit:contain; mix-blend-mode:screen;" />
+    <div style="display:flex; align-items:center; gap:32px;">
+      <img src="logo-alcorium.PNG" alt="Alcorium" style="height:52px; object-fit:contain; mix-blend-mode:screen;" />
+      <img src="logo-whisky.PNG" alt="Whisky House" style="height:52px; object-fit:contain; mix-blend-mode:screen;" />
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="hero-lines"></div>
+    <div class="hero-deco">🍷</div>
+<blockquote>"სწავლა არ სრულდება —<br>ის <em>იწყება.</em>"</blockquote>
+      <span>Retail Pro — 2025</span>
+    </div>
+    <div style="position:relative;z-index:1;max-width:520px;">
+      <div class="hero-eyebrow">ფილიალის მენეჯერებისთვის</div>
+      <h1>ტექნოლოგია.<br><em>სისტემები.</em><br>ცოდნა.</h1>
+      <p>პრაქტიკული სახელმძღვანელო — მოწყობილობების, ქსელისა და სამუშაო სისტემების შესახებ.</p>
+      <a href="#modules" class="hero-btn">სწავლის დაწყება →</a>
+    </div>
+  </section>
+
+  <section class="modules" id="modules">
+    <span class="modules-label">სასწავლო პროგრამა</span>
+    <div class="modules-title">სასწავლო თემები</div>
+    <div class="modules-line"></div>
+    <div class="cards-grid">
+      <a href="tema1.html" class="theme-card">
+        <div class="theme-num">თემა 01</div>
+        <span class="theme-icon">🖥️</span>
+        <h3>სამუშაო მაგიდის მოწყობილობები</h3>
+        <p>პრინტერი, ფისკალური აპარატი, ბანკური ტერმინალი და სხვა</p>
+      </a>
+      <a href="tema2.html" class="theme-card">
+        <div class="theme-num">თემა 02</div>
+        <span class="theme-icon">📡</span>
+        <h3>რეკი და ქსელური მოწყობილობები</h3>
+        <p>NVR, UPS, WiFi Router, Cisco, პროვაიდერის როუტერი</p>
+      </a>
+      <a href="tema3.html" class="theme-card">
+        <div class="theme-num">თემა 03</div>
+        <span class="theme-icon">🔒</span>
+        <h3>ქსელის უსაფრთხოება</h3>
+        <p>პაროლები, ფიშინგი, ფიზიკური უსაფრთხოება, ინციდენტები</p>
+      </a>
+      <a href="tema4.html" class="theme-card">
+        <div class="theme-num">თემა 04</div>
+        <span class="theme-icon">📷</span>
+        <h3>დამხმარე სისტემები</h3>
+        <p>კამერები, 1C პროგრამა, მოწყობილობების კავშირი კომპიუტერთან</p>
+      </a>
+      <a href="tema5.html" class="theme-card">
+        <div class="theme-num">თემა 05</div>
+        <span class="theme-icon">✅</span>
+        <h3>დასკვნა</h3>
+        <p>შეჯამება, მთავარი გზავნილები და პრაქტიკული რჩევები</p>
+      </a>
+    </div>
+  </section>
+
+  <footer class="rp-footer">
+    <div class="rp-footer-logo">Retail <em>Pro</em></div>
+    <div class="rp-footer-text">ფილიალის მენეჯერების სასწავლო პლატფორმა</div>
+  </footer>
+
+</body>
+</html>
